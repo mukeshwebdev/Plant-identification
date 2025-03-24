@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/ai-taxonomist/dist/src/index.js?module" type="module"></script>
+</head>
+<link rel="stylesheet" href="./scanner.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<body>
+  <h2 class="head">Plant identification application</h2>
+  <p class="header">An extensive guide on how to identify plants based on their characteristics such as leaves, flowers, fruits, stems, and overall growth habit and it also includes clear images or illustrations for each characteristic. <br>Provide detailed articles about different plant families and genera, highlighting their distinguishing features, preferred habitats, and common species within each group.</p>
+  <ai-taxonomist apiKey="2b10hInGkjT3BOt5YfI6uW9zau" prefer-dark></ai-taxonomist>
+  <input type="file" id="image-input" hidden>
+
+  <div id="results" hidden></div>
+  <div class="container">
+    <div class="con1">
+      <h2><img src="./ml 1.png" alt="">Identify plants in seconds</h2>
+      <p>Take multiple photos of your plant, upload them and let us work our magic. <br>This web demo allows you to identify up to 100 plants per month for free.</p>
+    </div>
+    <div class="con2">
+      <h2><img src="./ml 1.png" alt="">Power of Machine learning</h2>
+      <p>We use cutting-edge methods of machine learning (aka artificial intelligence) and train custom deep convolutional neural networks to ensure the best possible results. <br>We estimate that we get the plant name right 90% of the time.</p>
+    </div>
+  </div>
+</body>
+<script>
+  const imageInput = document.getElementById('image-input');
+  const resultsDiv = document.getElementById('results');
+
+  imageInput.addEventListener('change', async () => {
+    const file = imageInput.files[0];
+    const response = await fetch(`https://api.plantnet.org/v2/identify/plants?url=${URL.createObjectURL(file)}`);
+    const result = await response.json();
+    const filteredResults = filterResultsWithoutLogo(result);
+    displayResults(filteredResults);
+  });
+
+  function filterResultsWithoutLogo(result) {
+    return result.results.filter(r => !r.imageUrl.includes("plantnet_logo")); // Adjust the condition based on the URL pattern of PlantNet logo images
+  }
+
+  function displayResults(result) {
+    resultsDiv.innerHTML = `
+      <h2>Identification Results:</h2>
+      <ul>
+        ${result.map(r => `
+          <li>
+            <img src="${r.imageUrl}" alt="${r.name}">
+            <h3>${r.name}</h3>
+            <p>${r.confidence}% confidence</p>
+            <p>Benefits: ${r.benefits}</p>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+    resultsDiv.hidden = false;
+  }
+</script>
+</html>

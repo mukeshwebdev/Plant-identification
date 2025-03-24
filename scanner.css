@@ -1,0 +1,26 @@
+*{
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 100px;
+}
+ai-taxonomist{
+    padding-top: 100px;
+}
+.con1 p,.con2 p{
+    font-size: 20px;
+    text-align: center;
+}
+.con1 h2,.con2 h2{
+    text-align: center;
+}
+.header{
+    font-size: 30px;
+    text-align: center;
+}
+.head{
+    text-align: center;
+}

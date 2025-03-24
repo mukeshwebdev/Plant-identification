@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Identifier</title>
+<link rel="stylesheet" href="./ji.css">
+</head>
+<body>
+<div class="container">
+  <h1>Plant Identifier</h1>
+  <p>Discover the fascinating world of plants with our Plant Identifier tool. Whether you're a botany enthusiast, a nature lover, or simply intrigued by the beauty of plants, this tool is designed to help you learn more about the plant kingdom.</p>
+  
+  <h2>How It Works</h2>
+  <p>1. <strong>Select Leaf Structure Characteristics:</strong> Use the dropdown menus to choose the arrangement, structure, attachments, surface, venation, and type of hairs of the plant's leaves.</p>
+  <p>2. <strong>Identify Plant:</strong> Click the "Identify Plant" button to find matching plant species based on the selected characteristics.</p>
+  <p>3. <strong>Explore Further:</strong> Once a plant is identified, you can click on the provided Wikipedia link to learn more about the plant's taxonomy, habitat, uses, and more.</p>
+  
+  <h2>About Plant Identification</h2>
+  <p>Plant identification is a fascinating field that involves observing various characteristics of plants to determine their species. Leaf structure is one of the key features used by botanists and enthusiasts alike for plant identification. By understanding the arrangement, structure, and other attributes of leaves, one can discern different plant species and gain insights into their biology.</p>
+  
+  <h2>Start Exploring Now</h2>
+  <form>
+    <label for="arrangement">Arrangement:</label>
+    <select id="arrangement">
+        <option value="">Choose the option</option>
+        <option value="alternate">Alternate</option>
+        <option value="opposite">Opposite</option>
+        <option value="whorled">Whorled</option>
+    </select><br>
+
+    <label for="structure">Structure:</label>
+    <select id="structure">
+        <option value="">Choose the option</option>
+        <option value="simple">Simple</option>
+        <option value="compound">Compound</option>
+    </select><br>
+
+    <label for="attachments">Attachments:</label>
+    <select id="attachments">
+        <option value="">Choose the option</option>
+        <option value="petiole">Petiole</option>
+        <option value="sessile">Sessile</option>
+    </select><br>
+
+    <label for="surface">Surface:</label>
+    <select id="surface">
+        <option value="">Choose the option</option>
+        <option value="smooth">Smooth</option>
+        <option value="hairy">Hairy</option>
+        <option value="waxy">Waxy</option>
+    </select><br>
+
+    <label for="venation">Venation:</label>
+    <select id="venation">
+        <option value="">Choose the option</option>
+        <option value="reticulate">Reticulate</option>
+        <option value="parallel">Parallel</option>
+        <option value="stellate">Stellate</option>
+    </select><br>
+
+    <label for="hairs">Hairs:</label>
+    <select id="hairs">
+        <option value="">Choose the option</option>
+        <option value="trichomes">Trichomes</option>
+        <option value="stellate">Stellate</option>
+        <option value="peltate">Peltate</option>
+        <option value="scale-like">Scale-like</option>
+    </select><br>
+
+    <button type="button" onclick="identifyPlant()">Identify Plant</button>
+</form>
+
+<p id="result" style="font-size: 20px;"></p>
+
+<script>
+function identifyPlant() {
+    var arrangement = document.getElementById("arrangement").value.toLowerCase();
+    var structure = document.getElementById("structure").value.toLowerCase();
+    var attachments = document.getElementById("attachments").value.toLowerCase();
+    var surface = document.getElementById("surface").value.toLowerCase();
+    var venation = document.getElementById("venation").value.toLowerCase();
+    var hairs = document.getElementById("hairs").value.toLowerCase();
+
+    var plantName = "Leaf structure not found in database";
+
+    var csvData = `leafID,PlantName,Arrangement,Structure,Attachments,Surface,Venation,Hairs
+1,Tulsi,Alternate,Simple,Petiole,Smooth,Reticulate,Trichomes
+2,Silver Fern,Opposite,Compound,Petiole,Hairy,Parallel,Stellate
+3,Golden Glow,Whorled,Simple,Sessile,Waxy,Reticulate,Peltate
+4,Crimson Cascade,Alternate,Simple,Petiole,Smooth,Parallel,Scale-like
+5,Emerald Shimmer,Opposite,Compound,Petiole,Hairy,Reticulate,Trichomes
+6,Velvet Veil,Alternate,Simple,Petiole,Smooth,Parallel,Trichomes
+7,Sapphire Splendor,Opposite,Compound,Petiole,Waxy,Reticulate,Peltate
+8,Whispering Willow,Alternate,Simple,Sessile,Hairy,Parallel,Stellate
+9,Amber Aura,Opposite,Compound,Petiole,Smooth,Reticulate,Trichomes
+10,Ruby Rapture,Alternate,Compound,Petiole,Waxy,Parallel,Scale-like
+11,Tranquil Tropic,Opposite,Simple,Petiole,Hairy,Reticulate,Peltate
+12,Mystic Maple,Whorled,Compound,Petiole,Smooth,Reticulate,Trichomes
+13,Arctic Ash,Alternate,Simple,Sessile,Waxy,Parallel,Scale-like
+14,Celestial Cypress,Opposite,Compound,Petiole,Smooth,Reticulate,Stellate
+15,Oceanic Oasis,Alternate,Compound,Petiole,Hairy,Parallel,Trichomes
+16,Violet Vista,Opposite,Simple,Petiole,Waxy,Reticulate,Peltate
+17,Enchanted Elm,Whorled,Simple,Sessile,Smooth,Parallel,Stellate
+18,Midnight Moss,Alternate,Compound,Petiole,Hairy,Reticulate,Trichomes
+19,Luminous Lotus,Opposite,Simple,Petiole,Waxy,Parallel,Scale-like
+20,Serene Sequoia,Alternate,Compound,Sessile,Smooth,Reticulate,Stellate`;
+
+    var lines = csvData.split('\n');
+    for (var i = 1; i < lines.length; i++) {
+        var parts = lines[i].split(',');
+        if (
+            parts[2].toLowerCase() === arrangement &&
+            parts[3].toLowerCase() === structure &&
+            parts[4].toLowerCase() === attachments &&
+            parts[5].toLowerCase() === surface &&
+            parts[6].toLowerCase() === venation &&
+            parts[7].toLowerCase() === hairs
+        ) {
+            plantName = parts[1];
+            break; 
+        }
+    }
+
+    if (plantName !== "Leaf structure not found in database") {
+
+        var searchQuery = encodeURIComponent(plantName);
+        var wikipediaURL = "https://en.wikipedia.org/wiki/" + searchQuery;
+        var resultMessage = `The plant "${plantName}" was found! <a href="${wikipediaURL}" target="_blank">Click here for more information on Wikipedia</a>`;
+        document.getElementById("result").innerHTML = resultMessage;
+    } else {
+        document.getElementById("result").innerHTML = "No matching plant found.";
+    }
+}
+</script>
+</body>
+</html>
